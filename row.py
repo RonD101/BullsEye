@@ -32,9 +32,9 @@ class Row:
         print(colored(self.guess[0].name, self.guess[0].name), colored(self.guess[1].name, self.guess[1].name),
               colored(self.guess[2].name, self.guess[2].name), colored(self.guess[3].name, self.guess[3].name),
               end=" | ")
-        for i in range(self.black):
+        for i in range(int(self.black)):
             print(colored(" ", "grey", "on_grey"), end=" ")
-        for i in range(self.white):
+        for i in range(int(self.white)):
             print(colored(" ", "white", "on_white"), end=" ")
         print("")
 

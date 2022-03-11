@@ -23,11 +23,14 @@ class Board:
                             continue
                         Board.possibilities.append([color1, color2, color3, color4])
 
-    def printPossibilities(self):
-        for poss in Board.possibilities:
-            print(colored(poss[0].name, poss[0].name), ", ", colored(poss[1].name, poss[1].name), ", ",
-                  colored(poss[2].name, poss[2].name), ", ", colored(poss[3].name, poss[3].name))
-        print("Amount of Total possibilities: ", len(Board.possibilities))
+    def printPossibilities(self, GUI=False):
+        if GUI is True:
+            print("All possible patterns:")
+            for poss in Board.possibilities:
+                print(colored(poss[0].name, poss[0].name), colored(poss[1].name, poss[1].name),
+                      colored(poss[2].name, poss[2].name), colored(poss[3].name, poss[3].name))
+        print("Total possibilities: ", len(Board.possibilities))
+        return len(Board.possibilities)
 
     def addRow(self, newRow):
         Board.row.append(Row(newRow, 0, 0))
@@ -38,11 +41,27 @@ class Board:
         Board.row[-1].black = black
         Board.row[-1].white = white
         # Here you need to change guessing algorithm
-        # fix possibilities
+        removePossibilities(self, self.possibilities)
 
     def printBoard(self):
-        for row in reversed(Board.row):
+        for row in Board.row:
             print("--------------------------------")
             row.printRow()
             print("--------------------------------")
 
+
+def removePossibilities(board, possibilities):
+    for pos in possibilities[:]:
+        for row in board.row:
+            black = 0
+            white = 0
+            for i in range(4):
+                if row.guess[i].name == pos[i].name:
+                    black += 1
+            for i in range(4):
+                for j in range(4):
+                    if i != j and row.guess[i].name == pos[j].name:
+                        white += 1
+            if row.white != white or row.black != black:
+                possibilities.remove(pos)
+                break
