@@ -22,19 +22,28 @@ class Board:
                                 hashColor[3]:
                             continue
                         Board.possibilities.append([color1, color2, color3, color4])
+        return Board.possibilities
 
-    def printPossibilities(self, GUI=False):
+    def printPossibilities(self, shouldPrint=True, GUI=False):
         if GUI is True:
             print("All possible patterns:")
             for poss in Board.possibilities:
                 print(colored(poss[0].name, poss[0].name), colored(poss[1].name, poss[1].name),
                       colored(poss[2].name, poss[2].name), colored(poss[3].name, poss[3].name))
-        print("Total possibilities: ", len(Board.possibilities))
+        if shouldPrint is True:
+            print("Total possibilities: ", len(Board.possibilities))
         return len(Board.possibilities)
 
     def addRow(self, newRow):
-        Board.row.append(Row(newRow, 0, 0))
+        Board.row.append(Row().createRow(newRow, 0, 0))
         Board.turns += 1
+
+    def addRowWithHiddenPattern(self, hiddenPattern, guess):
+        Board.row.append(Row().createRowWithHiddenPattern(hiddenPattern, guess))
+        Board.turns += 1
+        removePossibilities\
+        (self, self.possibilities)
+        return Board.row[-1].black
 
     def addResult(self, black, white):
         assert (black + white <= 4 and black >= 0 and white >= 0 and "Result parameter are incorrect")
@@ -48,6 +57,11 @@ class Board:
             print("--------------------------------")
             row.printRow()
             print("--------------------------------")
+
+    def cleanBoard(self):
+        Board.row.clear()
+        Board.turns = 0
+        Board.possibilities.clear()
 
 
 def removePossibilities(board, possibilities):
